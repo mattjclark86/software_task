@@ -87,7 +87,7 @@ time.sleep(1)
 #This is the first message the user will see
 
 name = input("Please enter your name. Max 3 characters.")
-#Note: names do not have to be 3 characters, only up to a maximum of 3 characters, 0 characters is also possible
+#Note: names do not have to be 3 characters, only up to a maximum of 3 characters
 if(len(name) > 3):
     print("ERROR! Name too long. Shutting down.")
     sys.exit()

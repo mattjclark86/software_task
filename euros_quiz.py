@@ -77,10 +77,36 @@ def question_set_one():
     connection.commit()
     highscores = cursor.fetchall()
     time.sleep(1)
-    
-    print("SCORE TABLE")
+
+    entry = 0
+    rank = 0
+    temp = 0
+    user_accuracy = ""
+    user_time = ""
+    print("HIGHSCORES")
+    print("----------------------------------")
     for row in highscores:         
         print(row)
+        print("")
+        if(entry < row[0]):
+            entry = row[0]
+            rank = rank + temp + 1
+            user_accuracy = str(row[2])
+            user_time = str(row[3])
+        else:
+            temp += 1
+    print("You were entry number " + str(entry) + ". Your entry ranked in at number " + str(rank) + ". You had an accuracy of " + user_accuracy + "% and a time of " + user_time + " seconds.")
+    if(rank == 1):
+        print("Congratulations! Your entry is now the new highscore!!!")
+
+    time.sleep(1)
+    replay = input("Would you like to retry the quiz?")
+    if('yes' in replay):
+        time.sleep(1)
+        question_set_one()
+    else:
+        time.sleep(1)
+        print("Thanks for playing!")
     
 print("Hello User!")
 time.sleep(1)
@@ -97,4 +123,5 @@ print("The quiz is about to begin.")
 time.sleep(1)
 
 question_set_one()
+
 connection.close()

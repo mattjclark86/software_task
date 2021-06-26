@@ -2,6 +2,7 @@
 #The author used XAMPP and phpMyAdmin during the creation of this project
 import pymysql
 import time
+from quiz_questions import *
 
 connection = pymysql.connect(host="localhost", user="root", passwd="", database="euros_quiz")
 #The database must be set up before this program can be used
@@ -19,15 +20,32 @@ time FLOAT NOT NULL)"""
 
 cursor.execute(scores)
 
-def question_set_one():
-    #Function for the first set of questions
-    #Currently the only set of questions available
+def start_quiz():
+    #Starts the quiz with a new set of questions
     score = 0
     #The user's score is tracked throughout
     start = time.time()
     #The user is also timed on how fast they complete the quiz
-    answer_one = input("What team does Harry Kane play for?")
-    if('england' in answer_one.lower()):
+
+    generate_questions()
+
+    add_question = "SELECT * FROM questions WHERE ID='1';"
+    cursor.execute(add_question)
+    connection.commit()
+    question_set_one = cursor.fetchone()
+
+    add_question = "SELECT * FROM questions WHERE ID='2';"
+    cursor.execute(add_question)
+    connection.commit()
+    question_set_two = cursor.fetchone()
+
+    add_question = "SELECT * FROM questions WHERE ID='3';"
+    cursor.execute(add_question)
+    connection.commit()
+    question_set_three = cursor.fetchone()
+
+    answer_one = input(question_set_one[1])
+    if(question_set_one[2] in answer_one.lower()):
     #The questions are currently quite harsh, it has to be the exact name of the country
         print("Correct answer!")
         score += 1
@@ -39,8 +57,8 @@ def question_set_one():
     
     print("Next question...")
     time.sleep(1)
-    answer_two = input("Which team scored the most goals during the Euro2020 group stage?")
-    if('netherlands' in answer_two.lower()):
+    answer_two = input(question_set_two[1])
+    if(question_set_two[2] in answer_two.lower()):
         print("Correct answer!")
         score += 1
     else:
@@ -49,8 +67,8 @@ def question_set_one():
     
     print("Final question...")
     time.sleep(1)
-    answer_three = input("Which team had the best goal difference during the Euro2020 group stage?")
-    if('italy' in answer_three.lower()):
+    answer_three = input(question_set_three[1])
+    if(question_set_three[2] in answer_three.lower()):
         print("Correct answer!")
         score += 1
     else:
@@ -101,11 +119,13 @@ def question_set_one():
     if(rank == 1):
         print("Congratulations! Your entry is now the new highscore!!!")
 
+    drop_questions_table()
+
     time.sleep(1)
     replay = input("Would you like to retry the quiz?")
     if('yes' in replay):
         time.sleep(1)
-        question_set_one()
+        start_quiz()
     else:
         time.sleep(1)
         print("Thanks for playing!")
@@ -124,6 +144,6 @@ time.sleep(1)
 print("The quiz is about to begin.")
 time.sleep(1)
 
-question_set_one()
+start_quiz()
 
 connection.close()

@@ -84,7 +84,9 @@ def question_set_one():
     user_accuracy = ""
     user_time = ""
     print("HIGHSCORES")
-    print("----------------------------------")
+    print("-----------------------------")
+    print("ID  NAME  ACCURACY TIME")
+    print("-----------------------------")
     for row in highscores:         
         print(row)
         print("")

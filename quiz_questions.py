@@ -1,9 +1,13 @@
+#This is a module that stores all the data for the quiz questions
+#The module also adds the questions to the quiz database during the quiz
 import pymysql
 import random
+#This module uses the random module to randomise which questions get selected
 
 def question_one():
     question = "What country does Harry Kane play for?"
     answer = "england"
+    #Answers are always in lowercase and the user's input is converted into lowercase so case does not matter when answering
 
     connection = pymysql.connect(host="localhost", user="root", passwd="", database="euros_quiz")
 
@@ -151,6 +155,7 @@ def generate_questions():
     connection.close()
 
     questions_array = random.sample(range(1, 9), 3)
+    #No two questions are selected twice due to random.sample
 
     for x in questions_array:
         if(x == 1):
@@ -173,6 +178,7 @@ def generate_questions():
             question_nine()
 
 def drop_questions_table():
+    #Function used to drop the questions table in order to generate a different set of questions for the next attempt
     connection = pymysql.connect(host="localhost", user="root", passwd="", database="euros_quiz")
 
     cursor = connection.cursor()

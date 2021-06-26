@@ -3,6 +3,7 @@
 import pymysql
 import time
 from quiz_questions import *
+#Imports necessary functions from the quiz_questions module
 
 connection = pymysql.connect(host="localhost", user="root", passwd="", database="euros_quiz")
 #The database must be set up before this program can be used
@@ -28,6 +29,7 @@ def start_quiz():
     #The user is also timed on how fast they complete the quiz
 
     generate_questions()
+    #Generates three fresh randomly generated questions for the user to answer
 
     add_question = "SELECT * FROM questions WHERE ID='1';"
     cursor.execute(add_question)
@@ -46,7 +48,8 @@ def start_quiz():
 
     answer_one = input(question_set_one[1])
     if(question_set_one[2] in answer_one.lower()):
-    #The questions are currently quite harsh, it has to be the exact name of the country
+    #To get a question right, the user must include the answer of the question somewhere in their input
+    #It does not have to match exactly and case does not matter
         print("Correct answer!")
         score += 1
     else:
@@ -76,8 +79,10 @@ def start_quiz():
     time.sleep(1)
     
     accuracy = 100*(score/3)
+    #Accuracy is calculated as a percentage of correct questions answered vs total questions asked
     end = time.time()
     time_taken = round((end - start), 2)
+    #All time values are limited to two decimal places, meaning that it is unlikely but possible for two users to get the same time
     print("Your final score is " + str(score) + ". You completed the quiz in " + str(time_taken) + " seconds.")
     time.sleep(1)
     
@@ -99,6 +104,7 @@ def start_quiz():
     entry = 0
     rank = 0
     temp = 0
+    #Local variables are used to find the user's entry number and rank
     user_accuracy = ""
     user_time = ""
     print("HIGHSCORES")
@@ -120,6 +126,8 @@ def start_quiz():
         print("Congratulations! Your entry is now the new highscore!!!")
 
     drop_questions_table()
+    #The questions table in the quiz database is dropped after a user finishes a quiz
+    #This means that the user answers a different set of questions each time
 
     time.sleep(1)
     replay = input("Would you like to retry the quiz?")
@@ -130,20 +138,33 @@ def start_quiz():
         time.sleep(1)
         print("Thanks for playing!")
     
-print("Hello User!")
-time.sleep(1)
+print("Hello! Welcome to the Euro2020 group stage quiz!")
 #This is the first message the user will see
 
-name = input("Please enter your name. Max 3 characters.")
-#Note: names do not have to be 3 characters, only up to a maximum of 3 characters
-if(len(name) > 3):
-    print("ERROR! Name too long. Shutting down.")
-    sys.exit()
+
+def input_name():
+#A simple function that forces the user to have a name in length of 3 characters
+    time.sleep(1)
+    name = input("Please enter your name. Max 3 characters: ")
+    if(len(name) != 3):
+        time.sleep(1)
+        print("ERROR! Name is of an inappropriate length.")
+        return input_name()
+    else:
+        return name
+
+name = str(input_name())
+
+time.sleep(1)
+
+print("Hello " + name + "!")
 time.sleep(1)
 
 print("The quiz is about to begin.")
 time.sleep(1)
 
 start_quiz()
+#The quiz portion of the program activates
 
 connection.close()
+#The connection with the database is closed once the quiz finishes

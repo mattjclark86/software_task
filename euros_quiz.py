@@ -32,7 +32,7 @@ def question_set_one():
         print("Correct answer!")
         score += 1
     else:
-        print("WRONG!!")
+        print("Wrong answer...")
     time.sleep(1)
     #The program uses artifical time lengthening to simulate a traditional quiz format
     #It also gives the user breathing space for them to read each line of text
@@ -44,7 +44,7 @@ def question_set_one():
         print("Correct answer!")
         score += 1
     else:
-        print("WRONG!!")
+        print("Wrong answer...")
     time.sleep(1)
     
     print("Final question...")
@@ -54,7 +54,7 @@ def question_set_one():
         print("Correct answer!")
         score += 1
     else:
-        print("WRONG!!")
+        print("Wrong answer...")
     time.sleep(1)
     
     accuracy = 100*(score/3)

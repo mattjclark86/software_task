@@ -1,5 +1,7 @@
 #This program requires mysql for the database integration to work correctly
 #The author used XAMPP and phpMyAdmin during the creation of this project
+#To run this program, run the python file with Apache and MySQL running in the background
+#Use the terminal to input answers and commands
 import pymysql
 import time
 from quiz_questions import *
@@ -46,36 +48,36 @@ def start_quiz():
     connection.commit()
     question_set_three = cursor.fetchone()
 
-    answer_one = input(question_set_one[1])
+    answer_one = input(question_set_one[1] + " ")
     if(question_set_one[2] in answer_one.lower()):
     #To get a question right, the user must include the answer of the question somewhere in their input
     #It does not have to match exactly and case does not matter
-        print("Correct answer!")
+        print("Correct answer!\n")
         score += 1
     else:
-        print("Wrong answer...")
+        print("Wrong answer...\n")
     time.sleep(1)
     #The program uses artifical time lengthening to simulate a traditional quiz format
     #It also gives the user breathing space for them to read each line of text
     
     print("Next question...")
     time.sleep(1)
-    answer_two = input(question_set_two[1])
+    answer_two = input(question_set_two[1] + " ")
     if(question_set_two[2] in answer_two.lower()):
-        print("Correct answer!")
+        print("Correct answer!\n")
         score += 1
     else:
-        print("Wrong answer...")
+        print("Wrong answer...\n")
     time.sleep(1)
     
     print("Final question...")
     time.sleep(1)
-    answer_three = input(question_set_three[1])
+    answer_three = input(question_set_three[1]  + " ")
     if(question_set_three[2] in answer_three.lower()):
-        print("Correct answer!")
+        print("Correct answer!\n")
         score += 1
     else:
-        print("Wrong answer...")
+        print("Wrong answer...\n")
     time.sleep(1)
     
     accuracy = 100*(score/3)
@@ -83,7 +85,7 @@ def start_quiz():
     end = time.time()
     time_taken = round((end - start), 2)
     #All time values are limited to two decimal places, meaning that it is unlikely but possible for two users to get the same time
-    print("Your final score is " + str(score) + ". You completed the quiz in " + str(time_taken) + " seconds.")
+    print("Your final score is " + str(score) + ". You completed the quiz in " + str(time_taken) + " seconds.\n")
     time.sleep(1)
     
     print("Adding score to database...")
@@ -93,7 +95,7 @@ def start_quiz():
     connection.commit()
     time.sleep(1)
     
-    print("Retrieving highscores...")
+    print("Retrieving highscores...\n")
     select = "SELECT * FROM scores ORDER BY accuracy DESC, time;"
     #Time and score are the two parameters for determining the user's final rank
     cursor.execute(select)
@@ -121,24 +123,24 @@ def start_quiz():
             user_time = str(row[3])
         else:
             temp += 1
-    print("You were entry number " + str(entry) + ". Your entry ranked in at number " + str(rank) + ". You had an accuracy of " + user_accuracy + "% and a time of " + user_time + " seconds.")
+    print("\nYou were entry number " + str(entry) + ". Your entry ranked in at number " + str(rank) + ". You had an accuracy of " + user_accuracy + "% and a time of " + user_time + " seconds.")
     if(rank == 1):
-        print("Congratulations! Your entry is now the new highscore!!!")
+        print("Congratulations! Your entry is now the new highscore!!!\n")
 
     drop_questions_table()
     #The questions table in the quiz database is dropped after a user finishes a quiz
     #This means that the user answers a different set of questions each time
 
     time.sleep(1)
-    replay = input("Would you like to retry the quiz?")
+    replay = input("Would you like to retry the quiz? ")
     if('yes' in replay):
         time.sleep(1)
         start_quiz()
     else:
         time.sleep(1)
-        print("Thanks for playing!")
+        print("\nThanks for playing!")
     
-print("Hello! Welcome to the Euro2020 group stage quiz!")
+print("Hello! Welcome to the Euro2020 group stage quiz!\n")
 #This is the first message the user will see
 
 
@@ -160,7 +162,7 @@ time.sleep(1)
 print("Hello " + name + "!")
 time.sleep(1)
 
-print("The quiz is about to begin.")
+print("\nThe quiz is about to begin.\n")
 time.sleep(1)
 
 start_quiz()
